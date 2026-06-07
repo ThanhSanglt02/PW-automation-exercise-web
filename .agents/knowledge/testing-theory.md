@@ -1,4 +1,4 @@
-# CẨM NANG TOÀN TẬP: LÝ THUYẾT VÀ CHIẾN LƯỢC KIỂM THỬ PHẦN MỀM
+# LÝ THUYẾT VÀ CHIẾN LƯỢC KIỂM THỬ PHẦN MỀM
 
 Tài liệu này hệ thống hóa toàn bộ các khái niệm cốt lõi, kỹ thuật, phân loại và chiến lược áp dụng kiểm thử trong dự án dựa trên các tiêu chuẩn kiểm thử quốc tế mới nhất (ISTQB).
 
