@@ -12,7 +12,7 @@ Automated testing project for `automation exercise` website using Playwright typ
 ### Step 1: Clone the repository
 
 ```bash
-git clone https://github.com/ThanhSanglt02/PW_HTTS_DUE
+git clone git@github.com:ThanhSanglt02/PW-automation-exercise-web.git
 cd PW_HTTS_DUE
 ```
 
@@ -28,6 +28,8 @@ npm install
 npx playwright install
 ```
 
+---
+
 ## ⚙️ Configuration
 
 Create the `.env` file in the root folder:
@@ -41,6 +43,8 @@ HEADLESS=false
 ```
 
 > 📧 Please contact me via **damthithanhsang09@gmail.com** to receive the env file value
+
+---
 
 ## 🚀 How to Run Tests
 
@@ -64,11 +68,11 @@ npx playwright test
 ### 3. Run Specific Test Cases
 
 ```bash
-# Run all tests within the apAddNewKnowleage.spec.ts file
-npx playwright test tests/functional/adminPortal/ai/apAddNewKnowleage.spec.ts
+# Run all tests within the login.spec.ts file
+npx playwright test tests/login.spec.ts
 
 # Running Tests by Tag
-npx playwright test -g "@chatbot"
+npx playwright test -g "@login"
 ```
 
 ### 4. Run on Specific Browsers
@@ -111,24 +115,39 @@ Upon test completion, Playwright generates a rich, interactive HTML repor
 2. Configure Other Reporters <br>
    The default reporter is html. You can configure other reporter types (like list, json, junit) in the playwright.config.ts file.
 
+---
+
 ## 📂 Project Structure
 
-| Path                   | Responsibility   | Description                                                |
-| ---------------------- | ---------------- | ---------------------------------------------------------- |
-| `.github/workflows/`   | CI/CD            | GitHub Actions configuration for running Playwright tests  |
-| `data/`                | Test Data        | Contains test data (JSON, mock data, input values)         |
-| `env/.env`             | Environment      | Environment variables (BASE_URL, USERNAME, PASSWORD)       |
-| `env/.env.test`        | Test Environment | Environment configuration for test environment             |
-| `src/pages/`           | Page Objects     | Contains locators and UI actions following POM pattern     |
-| `src/enums/`           | Enums            | Shared enums used across the project                       |
-| `src/types/`           | Types            | TypeScript types and interfaces                            |
-| `src/utils/`           | Utilities        | Reusable helper functions (formatting, waits, logic)       |
-| `tests/`               | Test Specs       | Contains Playwright test cases                             |
-| `test-results/`        | Test Results     | Stores test outputs (logs, traces, screenshots on failure) |
-| `playwright-report/`   | Report           | HTML report generated after test execution                 |
-| `playwright.config.ts` | Configuration    | Playwright configuration (browser, timeout, reporter)      |
-| `package.json`         | Dependencies     | Project dependencies and npm scripts                       |
-| `README.md`            | Documentation    | Project documentation                                      |
+| Path                     | Responsibility     | Description                                                                                                                                        |
+| :----------------------- | :----------------- | :------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.agents/`               | AI Assistants Data | Stores context data, prompts, and static knowledge for development/testing AI agents (e.g., Codex skills). Contains no secrets.                    |
+| `.github/`               | CI/CD              | GitHub Actions pipelines to automatically execute tests, build code, and export reports upon PRs or pushes.                                        |
+| `docs/` or `docs/specs/` | Documentation      | Contains project specifications, business logic, test plans, and test case notes for testers and developers.                                       |
+| `src/`                   | Source Code        | Root directory for the main source code (page objects, helpers, types, and data); structured for future scalability.                               |
+| `src/data/testData.ts`   | Test Data          | Houses test-specific datasets, fixtures, and target input parameters for various test scenarios.                                                   |
+| `src/data/constant.ts`   | Constants          | Stores global constants (e.g., system configuration keys, default timeouts, environment names) used by helpers and pages.                          |
+| `src/data/payload.ts`    | API Payloads       | Manages reusable sample payload structures for API requests, separating them from general test data.                                               |
+| `src/pages/`             | Page Objects       | Implements the Page Object Model (POM). Each file/class maps to a UI page/component containing locators and page-level actions without assertions. |
+| `src/types/`             | Types & Interfaces | Defines global TypeScript types and interfaces to ensure type safety and document data structures as the project scales.                           |
+| `src/utils/`             | Utilities          | Contains reusable helper functions independent of UI components (e.g., date formatters, retry mechanisms, API clients).                            |
+| `tests/`                 | Test Specs         | Contains Playwright automation test scripts and end-to-end test suites that utilize page objects and source data.                                  |
+| `playwright.config.ts`   | Configuration      | Defines Playwright framework settings, including browser configurations, global timeouts, and reporting tools.                                     |
+| `package.json`           | Dependencies       | Manages project metadata, npm dependencies, third-party libraries, and execution scripts.                                                          |
+| `test-results/`          | Test Artifacts     | Auto-generated directory storing execution logs, visual traces, and screenshots from failed test runs.                                             |
+| `playwright-report/`     | HTML Report        | Holds the compiled, interactive HTML test execution reports generated after test suites complete.                                                  |
+
+---
+
+## Conventions & Best Practices
+
+- **Data Separation:** Keep test inputs (`testData`), API bodies (`payload`), and system values (`constant`) strictly separated within the data module.
+- **POM Discipline:** Page Objects must only manage locators and UI actions. Do not embed test assertions or complex test flows inside page classes.
+- **Utility Allocation:** Pure logic, network layers, and I/O operations belong under `src/utils/`. If a helper directly manipulates a UI element, place it inside `src/pages/` instead.
+- **Strict Typing:** Maintain strong type definitions within `src/types/` to prevent structural mismatches and handle codebase scaling smoothly.
+- **Secret Management:** Never commit credentials or secrets directly to the repository. Use local environment files or CI/CD secret stores.
+
+---
 
 ## 🛠️ Troubleshooting
 
@@ -152,10 +171,12 @@ timeout: 30000
 
 - Double check selector on pages folder
 
+---
+
 ## 👤 Author
 
-**Sang Dam** - th.sang1210@gmail.com
+**Sang Dam** - damthithanhsang09@gmail.com
 
 ## 📜 License
 
-This project is for final exam at university.
+This project is for personal practice to improve my automation skills and learn about AI

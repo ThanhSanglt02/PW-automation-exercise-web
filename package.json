@@ -1,15 +1,26 @@
 {
-  "name": "pw_automationexerciseweb",
+  "name": "pw-automation-exercise-web",
   "version": "1.0.0",
-  "description": "",
+  "description": "Automated testing project for `automation exercise` website using Playwright typescript",
   "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
   "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThanhSanglt02/PW-automation-exercise-web.git"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ThanhSanglt02/PW-automation-exercise-web/issues"
+  },
+  "homepage": "https://github.com/ThanhSanglt02/PW-automation-exercise-web#readme",
   "devDependencies": {
     "@playwright/test": "^1.60.0",
-    "@types/node": "^25.9.1"
+    "@types/node": "^25.9.2"
   }
 }
