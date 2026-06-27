@@ -1,10 +1,11 @@
 import { Locator, Page } from '@playwright/test';
 import { Title, SignupAccountInformation } from '../../data/types';
 import { BasePage } from './BasePage';
+import { String } from 'typescript-string-operations';
 
 export class SignupPage extends BasePage {
     private readonly selectors = {
-        titleRadio: (title: Title) => `input[type="radio"][name="title"][value="${title}"]`,
+        titleRadio: `input[type="radio"][name="title"][value="{0}"]`,
         passwordInput: '[data-qa="password"]',
         daySelect: '[data-qa="days"]',
         monthSelect: '[data-qa="months"]',
@@ -22,7 +23,8 @@ export class SignupPage extends BasePage {
         zipcodeInput: '[data-qa="zipcode"]',
         mobileNumberInput: '[data-qa="mobile_number"]',
         createAccountButton: '[data-qa="create-account"]',
-    } as const;
+        accountCreatedHeading: '[data-qa="account-created"]',
+    };
 
     readonly passwordInput: Locator;
     readonly daySelect: Locator;
@@ -41,6 +43,7 @@ export class SignupPage extends BasePage {
     readonly zipcodeInput: Locator;
     readonly mobileNumberInput: Locator;
     readonly createAccountButton: Locator;
+    readonly accountCreatedHeading: Locator;
 
     constructor(page: Page) {
         super(page);
@@ -61,10 +64,11 @@ export class SignupPage extends BasePage {
         this.zipcodeInput = this.page.locator(this.selectors.zipcodeInput);
         this.mobileNumberInput = this.page.locator(this.selectors.mobileNumberInput);
         this.createAccountButton = this.page.locator(this.selectors.createAccountButton);
+        this.accountCreatedHeading = this.page.locator(this.selectors.accountCreatedHeading);
     }
 
     titleRadio(title: Title): Locator {
-        return this.page.locator(this.selectors.titleRadio(title));
+        return this.page.locator(String.format(this.selectors.titleRadio, title));
     }
 
     async selectTitle(title: Title) {
@@ -91,8 +95,27 @@ export class SignupPage extends BasePage {
         await this.mobileNumberInput.fill(accountInformation.mobileNumber);
     }
 
-    async createAccount() {
+    async submitSignUpForm() {
         await this.createAccountButton.click();
+        await this.waitForLoadState();
+    }
+
+    /**
+     * Checks whether the account created heading is visible after signup submission.
+     *
+     * @returns True when the account created heading appears on the page.
+     */
+    async isAccountCreatedHeadingVisible() {
+        return this.accountCreatedHeading.isVisible();
+    }
+
+    /**
+     * Gets the account created heading text after signup submission.
+     *
+     * @returns The trimmed account created heading text, or an empty string when no text is found.
+     */
+    async getAccountCreatedHeadingText() {
+        return (await this.accountCreatedHeading.textContent())?.trim() ?? '';
     }
 
     private async setNewsletterSubscription(shouldSubscribe = false) {

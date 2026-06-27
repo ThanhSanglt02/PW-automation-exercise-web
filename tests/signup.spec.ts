@@ -1,31 +1,26 @@
-import { test } from '@playwright/test';
-import { VALID_SIGNUP_ACCOUNT_INFORMATION } from '../data/testData';
-import { LandingPage } from '../src/pages/LandingPage';
-import { LoginPage } from '../src/pages/LoginPage';
-import { SignupPage } from '../src/pages/SignupPage';
-import { fakerAccountInfomation } from '../src/utils/functional/faker';
+import { softExpect, test } from '../src/fixtures/appFixtures';
+import { validSignupTestData } from '../data/testData';
 
-const accountFaker = fakerAccountInfomation();
-let landingPage: LandingPage;
-let loginPage: LoginPage;
-let signupPage: SignupPage;
+const signupTestData = validSignupTestData();
 
-test.beforeEach(async ({ page }) => {
-    landingPage = new LandingPage(page);
-    loginPage = new LoginPage(page);
-    signupPage = new SignupPage(page);
-});
-test('Sign up', async () => {
-    await test.step('Go to Singup page through header', async () => {
-        await landingPage.goToAutomationHomePage();
-        await landingPage.header.goToLoginPage();
-        await loginPage.signup(accountFaker.username, accountFaker.email);
+test('Test Case 1: Register User', async ({ homePage, loginPage, signupPage }) => {
+    await test.step('Go to Signup page through header', async () => {
+        await homePage.header.goToLoginPage();
+        softExpect(await loginPage.isSignupFormHeadingVisible()).toBeTruthy();
+        softExpect(await loginPage.getSignupFormHeadingText()).toBe('New User Signup!');
+    });
+
+    await test.step('Enter username and email before entering detail information', async () => {
+        await loginPage.signup(signupTestData.credential.username, signupTestData.credential.email);
     });
 
     await test.step('Fill signup account information', async () => {
-        await signupPage.fillAccountInformation({
-            ...VALID_SIGNUP_ACCOUNT_INFORMATION,
-            password: accountFaker.password,
-        });
+        await signupPage.fillAccountInformation(signupTestData.accountInformation);
+        await signupPage.submitSignUpForm();
+    });
+
+    await test.step("Verify that 'Account Created!' is visible", async () => {
+        softExpect(await signupPage.isAccountCreatedHeadingVisible()).toBeTruthy();
+        softExpect(await signupPage.getAccountCreatedHeadingText()).toBe('Account Created!');
     });
 });

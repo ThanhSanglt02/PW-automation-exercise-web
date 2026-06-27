@@ -4,12 +4,14 @@ import { BasePage } from './BasePage';
 export class LoginPage extends BasePage {
     private readonly selectors = {
         signupForm: '.signup-form',
+        signupFormHeading: 'h2',
         signupNameInput: '[data-qa="signup-name"]',
         signupEmailInput: '[data-qa="signup-email"]',
         signupButton: '[data-qa="signup-button"]',
-    } as const;
+    };
 
     readonly signupForm: Locator;
+    readonly signupFormHeading: Locator;
     readonly signupNameInput: Locator;
     readonly signupEmailInput: Locator;
     readonly signupButton: Locator;
@@ -17,9 +19,28 @@ export class LoginPage extends BasePage {
     constructor(page: Page) {
         super(page);
         this.signupForm = this.page.locator(this.selectors.signupForm);
+        this.signupFormHeading = this.signupForm.locator(this.selectors.signupFormHeading);
         this.signupNameInput = this.signupForm.locator(this.selectors.signupNameInput);
         this.signupEmailInput = this.signupForm.locator(this.selectors.signupEmailInput);
         this.signupButton = this.signupForm.locator(this.selectors.signupButton);
+    }
+
+    /**
+     * Checks whether the signup form heading is visible.
+     *
+     * @returns True when the signup form heading appears on the page.
+     */
+    async isSignupFormHeadingVisible() {
+        return this.signupFormHeading.isVisible();
+    }
+
+    /**
+     * Gets the signup form heading text.
+     *
+     * @returns The trimmed heading text, or an empty string when no text is found.
+     */
+    async getSignupFormHeadingText() {
+        return (await this.signupFormHeading.textContent())?.trim() ?? '';
     }
 
     /**
@@ -31,5 +52,6 @@ export class LoginPage extends BasePage {
         await this.signupNameInput.fill(signupName);
         await this.signupEmailInput.fill(signupEmail);
         await this.signupButton.click();
+        await this.waitForLoadState();
     }
 }

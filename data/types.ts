@@ -1,10 +1,10 @@
 import { COUNTRIES, TITLES, WEB_URLS } from './constant';
 
-export type Title = typeof TITLES[keyof typeof TITLES];
+export type Title = (typeof TITLES)[keyof typeof TITLES];
 
-export type WebUrl = typeof WEB_URLS[keyof typeof WEB_URLS];
+export type WebUrl = (typeof WEB_URLS)[keyof typeof WEB_URLS];
 
-export type Country = typeof COUNTRIES[keyof typeof COUNTRIES];
+export type Country = (typeof COUNTRIES)[keyof typeof COUNTRIES];
 
 export type DateOfBirth = {
     day: string;
@@ -34,4 +34,9 @@ export type SignupCredential = {
     username: string;
     email: string;
     password: string;
+};
+
+export type SignupTestData = {
+    credential: SignupCredential;
+    accountInformation: SignupAccountInformation;
 };
