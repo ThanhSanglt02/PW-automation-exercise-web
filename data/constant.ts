@@ -26,9 +26,4 @@ export const COUNTRIES = {
     Singapore: 'Singapore',
 } as const;
 
-export const ENDPOINTS = {
-    LOGIN: '/auth/login',
-    DASHBOARD: '/dashboard',
-} as const;
-
-export const ADS_SELECTOR = '#google_vignette';
+export const ADS_URL = '#google_vignette';

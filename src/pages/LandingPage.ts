@@ -9,13 +9,13 @@ export class LandingPage extends BasePage {
 
     async goToAutomationHomePage() {
         await this.waitForLoadState();
-        await this.page.goto(getEnvConfig().url);
+        await this.navigateTo(getEnvConfig().url);
 
         await this.waitForLoadState();
     }
 
     async goToSignupPage() {
-        await this.page.goto(`${getEnvConfig().url}/login`);
+        await this.navigateTo(`${getEnvConfig().url}/login`);
         await this.waitForLoadState();
     }
 }

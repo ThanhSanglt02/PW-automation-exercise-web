@@ -1,6 +1,6 @@
 import { faker, SexType } from '@faker-js/faker';
 import { COUNTRIES, TITLES } from '../../../data/constant';
-import { Country, DateOfBirth, SignupAccountInformation, SignupCredential, Title } from '../../../data/types';
+import { Country, DateOfBirth, SignupAccountInformation, SignupCredential, Title } from '../../types/types';
 
 /**
  * Generates the login/signup credential used on the first signup form.
@@ -22,10 +22,13 @@ export function fakerSignupCredential(): SignupCredential {
  * The returned shape matches `SignupAccountInformation`, so tests can pass it
  * directly to `SignupPage.fillAccountInformation()`.
  *
+ * @param accountInformationOptions Optional field overrides for the signup form.
  * @returns A complete random signup account information payload.
  */
-export function fakerSignupAccountInformation(): SignupAccountInformation {
-    return {
+export function fakerSignupAccountInformation(
+    accountInformationOptions: Partial<SignupAccountInformation> = {},
+): SignupAccountInformation {
+    const defaultAccountInformation: SignupAccountInformation = {
         title: title(),
         password: password(),
         dateOfBirth: dateOfBirth(),
@@ -39,8 +42,13 @@ export function fakerSignupAccountInformation(): SignupAccountInformation {
         city: city(),
         zipcode: zipcode(),
         mobileNumber: phone(),
-        subscribeNewsletter: faker.datatype.boolean(),
-        receiveSpecialOffers: faker.datatype.boolean(),
+        subscribeNewsletter: false,
+        receiveSpecialOffers: false,
+    };
+
+    return {
+        ...defaultAccountInformation,
+        ...accountInformationOptions,
     };
 }
 

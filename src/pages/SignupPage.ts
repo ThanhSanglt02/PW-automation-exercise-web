@@ -1,7 +1,8 @@
 import { Locator, Page } from '@playwright/test';
-import { Title, SignupAccountInformation } from '../../data/types';
-import { BasePage } from './BasePage';
 import { String } from 'typescript-string-operations';
+import { Title, SignupAccountInformation } from '../types/types';
+import { playwrightActions } from '../utils/functional/elementAction';
+import { BasePage } from './BasePage';
 
 export class SignupPage extends BasePage {
     private readonly selectors = {
@@ -24,6 +25,7 @@ export class SignupPage extends BasePage {
         mobileNumberInput: '[data-qa="mobile_number"]',
         createAccountButton: '[data-qa="create-account"]',
         accountCreatedHeading: '[data-qa="account-created"]',
+        continueButton: `//a[@data-qa="continue-button"]`,
     };
 
     readonly passwordInput: Locator;
@@ -44,6 +46,7 @@ export class SignupPage extends BasePage {
     readonly mobileNumberInput: Locator;
     readonly createAccountButton: Locator;
     readonly accountCreatedHeading: Locator;
+    readonly continueButton: Locator;
 
     constructor(page: Page) {
         super(page);
@@ -65,38 +68,46 @@ export class SignupPage extends BasePage {
         this.mobileNumberInput = this.page.locator(this.selectors.mobileNumberInput);
         this.createAccountButton = this.page.locator(this.selectors.createAccountButton);
         this.accountCreatedHeading = this.page.locator(this.selectors.accountCreatedHeading);
+        this.continueButton = this.page.locator(this.selectors.continueButton);
     }
-
     titleRadio(title: Title): Locator {
         return this.page.locator(String.format(this.selectors.titleRadio, title));
     }
 
     async selectTitle(title: Title) {
-        await this.titleRadio(title).check();
+        await playwrightActions.checkElement(this.titleRadio(title), this.page);
     }
 
     async fillAccountInformation(accountInformation: SignupAccountInformation) {
         await this.selectTitle(accountInformation.title);
-        await this.passwordInput.fill(accountInformation.password);
-        await this.daySelect.selectOption(accountInformation.dateOfBirth.day);
-        await this.monthSelect.selectOption(accountInformation.dateOfBirth.month);
-        await this.yearSelect.selectOption(accountInformation.dateOfBirth.year);
+        await playwrightActions.fillElement(this.passwordInput, accountInformation.password, this.page);
+        await playwrightActions.selectElementOption(this.daySelect, accountInformation.dateOfBirth.day, this.page);
+        await playwrightActions.selectElementOption(this.monthSelect, accountInformation.dateOfBirth.month, this.page);
+        await playwrightActions.selectElementOption(this.yearSelect, accountInformation.dateOfBirth.year, this.page);
         await this.setNewsletterSubscription(accountInformation.subscribeNewsletter);
         await this.setSpecialOffers(accountInformation.receiveSpecialOffers);
-        await this.firstNameInput.fill(accountInformation.firstName);
-        await this.lastNameInput.fill(accountInformation.lastName);
-        await this.companyInput.fill(accountInformation.company ?? '');
-        await this.addressInput.fill(accountInformation.address);
-        await this.address2Input.fill(accountInformation.address2 ?? '');
-        await this.countrySelect.selectOption(accountInformation.country);
-        await this.stateInput.fill(accountInformation.state);
-        await this.cityInput.fill(accountInformation.city);
-        await this.zipcodeInput.fill(accountInformation.zipcode);
-        await this.mobileNumberInput.fill(accountInformation.mobileNumber);
+        await playwrightActions.fillElement(this.firstNameInput, accountInformation.firstName, this.page);
+        await playwrightActions.fillElement(this.lastNameInput, accountInformation.lastName, this.page);
+        await playwrightActions.fillElement(this.companyInput, accountInformation.company ?? '', this.page);
+        await playwrightActions.fillElement(this.addressInput, accountInformation.address, this.page);
+        await playwrightActions.fillElement(this.address2Input, accountInformation.address2 ?? '', this.page);
+        await playwrightActions.selectElementOption(this.countrySelect, accountInformation.country, this.page);
+        await playwrightActions.fillElement(this.stateInput, accountInformation.state, this.page);
+        await playwrightActions.fillElement(this.cityInput, accountInformation.city, this.page);
+        await playwrightActions.fillElement(this.zipcodeInput, accountInformation.zipcode, this.page);
+        await playwrightActions.fillElement(this.mobileNumberInput, accountInformation.mobileNumber, this.page);
     }
 
     async submitSignUpForm() {
-        await this.createAccountButton.click();
+        await playwrightActions.clickElement(this.createAccountButton);
+        await this.waitForLoadState();
+    }
+
+    async clickContinueButton() {
+        let isVisible = await this.page.isVisible(this.selectors.continueButton);
+        if (isVisible) {
+            await playwrightActions.clickElement(this.continueButton);
+        }
         await this.waitForLoadState();
     }
 
@@ -119,10 +130,10 @@ export class SignupPage extends BasePage {
     }
 
     private async setNewsletterSubscription(shouldSubscribe = false) {
-        await this.newsletterCheckbox.setChecked(shouldSubscribe);
+        await playwrightActions.setElementChecked(this.newsletterCheckbox, shouldSubscribe, this.page);
     }
 
     private async setSpecialOffers(shouldReceiveOffers = false) {
-        await this.specialOffersCheckbox.setChecked(shouldReceiveOffers);
+        await playwrightActions.setElementChecked(this.specialOffersCheckbox, shouldReceiveOffers, this.page);
     }
 }

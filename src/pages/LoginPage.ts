@@ -1,4 +1,5 @@
 import { Locator, Page } from '@playwright/test';
+import { playwrightActions } from '../utils/functional/elementAction';
 import { BasePage } from './BasePage';
 
 export class LoginPage extends BasePage {
@@ -39,7 +40,7 @@ export class LoginPage extends BasePage {
      *
      * @returns The trimmed heading text, or an empty string when no text is found.
      */
-    async getSignupFormHeadingText() {
+    async getSignupFormHeadingText(): Promise<string> {
         return (await this.signupFormHeading.textContent())?.trim() ?? '';
     }
 
@@ -49,9 +50,9 @@ export class LoginPage extends BasePage {
      * @param signupEmail  - Email for signup
      */
     async signup(signupName: string, signupEmail: string) {
-        await this.signupNameInput.fill(signupName);
-        await this.signupEmailInput.fill(signupEmail);
-        await this.signupButton.click();
+        await playwrightActions.fillElement(this.signupNameInput, signupName, this.page);
+        await playwrightActions.fillElement(this.signupEmailInput, signupEmail, this.page);
+        await playwrightActions.clickElement(this.signupButton, { page: this.page });
         await this.waitForLoadState();
     }
 }

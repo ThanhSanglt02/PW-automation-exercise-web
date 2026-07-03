@@ -1,4 +1,4 @@
-import { COUNTRIES, TITLES, WEB_URLS } from './constant';
+import { COUNTRIES, TITLES, WEB_URLS } from '../../data/constant';
 
 export type Title = (typeof TITLES)[keyof typeof TITLES];
 
