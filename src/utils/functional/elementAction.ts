@@ -28,7 +28,7 @@ class ActionUtilities {
      * @param value Value to fill.
      * @param page Optional page used to close ads URL after the action.
      */
-    async fillElement(locator: Locator, value: string, page?: Page): Promise<void> {
+    async fillElement(locator: Locator, value: string): Promise<void> {
         logger(`Type: '${value}' in element: ${locator}`);
         await test.step(`I fill '${value}' into element '${locator}'`, async () => {
             await locator.fill(value);

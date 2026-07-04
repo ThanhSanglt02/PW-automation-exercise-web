@@ -70,45 +70,74 @@ export class SignupPage extends BasePage {
         this.accountCreatedHeading = this.page.locator(this.selectors.accountCreatedHeading);
         this.continueButton = this.page.locator(this.selectors.continueButton);
     }
+    /**
+     * Gets the title radio button locator by title value.
+     *
+     * @param title Title value supported by the signup form.
+     * @returns Locator for the matching title radio button.
+     */
     titleRadio(title: Title): Locator {
         return this.page.locator(String.format(this.selectors.titleRadio, title));
     }
 
-    async selectTitle(title: Title) {
+    /**
+     * Selects a title on the signup account information form.
+     *
+     * @param title Title value supported by the signup form.
+     * @returns Promise that resolves when the title is selected.
+     */
+    async selectTitle(title: Title): Promise<void> {
         await playwrightActions.checkElement(this.titleRadio(title), this.page);
     }
 
-    async fillAccountInformation(accountInformation: SignupAccountInformation) {
+    /**
+     * Fills the signup account information form.
+     *
+     * @param accountInformation Account information used for registration.
+     * @returns Promise that resolves when all account information fields are filled.
+     */
+    async fillAccountInformation(accountInformation: SignupAccountInformation): Promise<void> {
         await this.selectTitle(accountInformation.title);
-        await playwrightActions.fillElement(this.passwordInput, accountInformation.password, this.page);
-        await playwrightActions.selectElementOption(this.daySelect, accountInformation.dateOfBirth.day, this.page);
-        await playwrightActions.selectElementOption(this.monthSelect, accountInformation.dateOfBirth.month, this.page);
-        await playwrightActions.selectElementOption(this.yearSelect, accountInformation.dateOfBirth.year, this.page);
+        await playwrightActions.fillElement(this.passwordInput, accountInformation.password);
+        await playwrightActions.selectElementOption(this.daySelect, accountInformation.dateOfBirth.day);
+        await playwrightActions.selectElementOption(this.monthSelect, accountInformation.dateOfBirth.month);
+        await playwrightActions.selectElementOption(this.yearSelect, accountInformation.dateOfBirth.year);
         await this.setNewsletterSubscription(accountInformation.subscribeNewsletter);
         await this.setSpecialOffers(accountInformation.receiveSpecialOffers);
-        await playwrightActions.fillElement(this.firstNameInput, accountInformation.firstName, this.page);
-        await playwrightActions.fillElement(this.lastNameInput, accountInformation.lastName, this.page);
-        await playwrightActions.fillElement(this.companyInput, accountInformation.company ?? '', this.page);
-        await playwrightActions.fillElement(this.addressInput, accountInformation.address, this.page);
-        await playwrightActions.fillElement(this.address2Input, accountInformation.address2 ?? '', this.page);
-        await playwrightActions.selectElementOption(this.countrySelect, accountInformation.country, this.page);
-        await playwrightActions.fillElement(this.stateInput, accountInformation.state, this.page);
-        await playwrightActions.fillElement(this.cityInput, accountInformation.city, this.page);
-        await playwrightActions.fillElement(this.zipcodeInput, accountInformation.zipcode, this.page);
-        await playwrightActions.fillElement(this.mobileNumberInput, accountInformation.mobileNumber, this.page);
+        await playwrightActions.fillElement(this.firstNameInput, accountInformation.firstName);
+        await playwrightActions.fillElement(this.lastNameInput, accountInformation.lastName);
+        await playwrightActions.fillElement(this.companyInput, accountInformation.company ?? '');
+        await playwrightActions.fillElement(this.addressInput, accountInformation.address);
+        await playwrightActions.fillElement(this.address2Input, accountInformation.address2 ?? '');
+        await playwrightActions.selectElementOption(this.countrySelect, accountInformation.country);
+        await playwrightActions.fillElement(this.stateInput, accountInformation.state);
+        await playwrightActions.fillElement(this.cityInput, accountInformation.city);
+        await playwrightActions.fillElement(this.zipcodeInput, accountInformation.zipcode);
+        await playwrightActions.fillElement(this.mobileNumberInput, accountInformation.mobileNumber);
     }
 
-    async submitSignUpForm() {
+    /**
+     * Submits the signup account information form.
+     *
+     * @returns Promise that resolves when the form submission finishes loading.
+     */
+    async submitSignUpForm(): Promise<void> {
         await playwrightActions.clickElement(this.createAccountButton);
         await this.waitForLoadState();
     }
 
-    async clickContinueButton() {
+    /**
+     * Clicks the continue button after account creation when it is visible.
+     *
+     * @returns Promise that resolves when post-signup navigation and ad handling are completed.
+     */
+    async clickContinueButton(): Promise<void> {
         let isVisible = await this.page.isVisible(this.selectors.continueButton);
         if (isVisible) {
             await playwrightActions.clickElement(this.continueButton);
         }
         await this.waitForLoadState();
+        await this.closeAds();
     }
 
     /**
@@ -116,7 +145,7 @@ export class SignupPage extends BasePage {
      *
      * @returns True when the account created heading appears on the page.
      */
-    async isAccountCreatedHeadingVisible() {
+    async isAccountCreatedHeadingVisible(): Promise<boolean> {
         return this.accountCreatedHeading.isVisible();
     }
 
@@ -125,15 +154,27 @@ export class SignupPage extends BasePage {
      *
      * @returns The trimmed account created heading text, or an empty string when no text is found.
      */
-    async getAccountCreatedHeadingText() {
+    async getAccountCreatedHeadingText(): Promise<string> {
         return (await this.accountCreatedHeading.textContent())?.trim() ?? '';
     }
 
-    private async setNewsletterSubscription(shouldSubscribe = false) {
+    /**
+     * Sets the newsletter subscription checkbox state.
+     *
+     * @param shouldSubscribe Whether the newsletter checkbox should be checked.
+     * @returns Promise that resolves when the checkbox state is updated.
+     */
+    private async setNewsletterSubscription(shouldSubscribe = false): Promise<void> {
         await playwrightActions.setElementChecked(this.newsletterCheckbox, shouldSubscribe, this.page);
     }
 
-    private async setSpecialOffers(shouldReceiveOffers = false) {
+    /**
+     * Sets the special offers checkbox state.
+     *
+     * @param shouldReceiveOffers Whether the special offers checkbox should be checked.
+     * @returns Promise that resolves when the checkbox state is updated.
+     */
+    private async setSpecialOffers(shouldReceiveOffers = false): Promise<void> {
         await playwrightActions.setElementChecked(this.specialOffersCheckbox, shouldReceiveOffers, this.page);
     }
 }

@@ -1,12 +1,12 @@
 import { softExpect, test } from '../src/fixtures/appFixtures';
-import { validSignupTestData } from '../data/testData';
+import { validSignupTestData, loginTestData } from '../data/testData';
 
 const signupTestData = validSignupTestData({
     subscribeNewsletter: true,
     receiveSpecialOffers: false,
 });
 
-test.describe('Sign up @signup', () => {
+test.describe('Sign up & Login @signup', () => {
     test('Test Case 1: Register User', async ({ homePage, loginPage, signupPage }) => {
         await test.step('Go to Signup page through header', async () => {
             await homePage.header.goToLoginPage();
@@ -31,6 +31,25 @@ test.describe('Sign up @signup', () => {
         await test.step(` Verify that 'Logged in as ${signupTestData.credential.username}' is visible`, async () => {
             await signupPage.clickContinueButton();
             softExpect(await loginPage.header.getUserNameLogged()).toContain(signupTestData.credential.username);
+        });
+    });
+});
+
+test.describe('Login @login', () => {
+    test('Test Case 2: Login User with correct email and password', async ({ homePage, loginPage, signupPage }) => {
+        await test.step('Go to Login page through header', async () => {
+            await homePage.header.goToLoginPage();
+            softExpect(await loginPage.isLoginFormHeadingVisible()).toBeTruthy();
+            softExpect(await loginPage.getLoginFormHeadingText()).toBe('Login to your account');
+        });
+
+        await test.step('Enter correct email address and password', async () => {
+            await loginPage.login(loginTestData.validUser.email, loginTestData.validUser.password);
+        });
+
+        await test.step(` Verify that 'Logged in as ${loginTestData.validUser.username}' is visible`, async () => {
+            await signupPage.clickContinueButton();
+            softExpect(await loginPage.header.getUserNameLogged()).toContain(loginTestData.validUser.username);
         });
     });
 });

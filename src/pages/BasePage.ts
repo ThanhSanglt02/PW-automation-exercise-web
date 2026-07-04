@@ -42,25 +42,31 @@ export class BasePage {
         await test.step(`I go to URL '${url}'`, async () => {
             await this.page.goto(url);
         });
-
-        await this.closeAds();
     }
 
     /**
      * Removes the ads URL fragment when it appears on the current page.
+     *
+     * @param timeout Maximum time to check for the ads URL.
      */
+    // Exposes a reusable page-level action for closing the ads redirect.
     public async closeAds(timeout = WAIT_TIMES.SHORT): Promise<void> {
         try {
-            await this.page.waitForURL(`**/*${ADS_URL}*`, { timeout });
+            // Poll the browser URL until the ads fragment appears or the timeout is reached.
+            await this.page.waitForFunction((adsUrl) => window.location.href.includes(adsUrl), ADS_URL, {
+                // Check the current URL once per second.
+                polling: 1000,
+                // Stop checking after the configured timeout.
+                timeout,
+            });
+
             const currentUrl = this.page.url();
-
             const cleanUrl = currentUrl.replace(ADS_URL, '');
-
             await test.step('Close ads redirect', async () => {
                 await this.page.goto(cleanUrl);
             });
         } catch (error) {
-            logger('Failed to close ads redirect. Continue test flow.', {
+            logger('Ads redirect did not appear within timeout. Continue test flow.', {
                 error,
                 currentUrl: this.page.url(),
             });
