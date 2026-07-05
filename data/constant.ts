@@ -26,4 +26,8 @@ export const COUNTRIES = {
     Singapore: 'Singapore',
 } as const;
 
+export const ERROR_MESSAGE = {
+    INVALID_LOGIN_FORM: 'Your email or password is incorrect!',
+} as const;
+
 export const ADS_URL = '#google_vignette';

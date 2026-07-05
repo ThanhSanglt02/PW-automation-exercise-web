@@ -12,6 +12,7 @@ export class LoginPage extends BasePage {
         loginEmailInput: '.login-form [data-qa="login-email"]',
         loginPasswordInput: '.login-form [data-qa="login-password"]',
         loginButton: '.login-form [data-qa="login-button"]',
+        loginErrorMessage: '.login-form p',
     };
 
     readonly signupFormHeading: Locator;
@@ -22,6 +23,7 @@ export class LoginPage extends BasePage {
     readonly loginEmailInput: Locator;
     readonly loginPasswordInput: Locator;
     readonly loginButton: Locator;
+    readonly loginErrorMessage: Locator;
 
     constructor(page: Page) {
         super(page);
@@ -33,6 +35,7 @@ export class LoginPage extends BasePage {
         this.loginEmailInput = this.page.locator(this.selectors.loginEmailInput);
         this.loginPasswordInput = this.page.locator(this.selectors.loginPasswordInput);
         this.loginButton = this.page.locator(this.selectors.loginButton);
+        this.loginErrorMessage = this.page.locator(this.selectors.loginErrorMessage);
     }
 
     /**
@@ -71,6 +74,9 @@ export class LoginPage extends BasePage {
         return (await this.loginFormHeading.textContent())?.trim() ?? '';
     }
 
+    async getErrorMessageLogin(): Promise<string> {
+        return await playwrightActions.getElementText(this.loginErrorMessage);
+    }
     /**
      * Starts signup by submitting the initial username and email fields.
      *

@@ -1,5 +1,6 @@
 import { softExpect, test } from '../src/fixtures/appFixtures';
 import { validSignupTestData, loginTestData } from '../data/testData';
+import { ERROR_MESSAGE } from '../data/constant';
 
 const signupTestData = validSignupTestData({
     subscribeNewsletter: true,
@@ -50,6 +51,22 @@ test.describe('Login @login', () => {
         await test.step(` Verify that 'Logged in as ${loginTestData.validUser.username}' is visible`, async () => {
             await signupPage.clickContinueButton();
             softExpect(await loginPage.header.getUserNameLogged()).toContain(loginTestData.validUser.username);
+        });
+    });
+
+    test('Test Case 3: Login User with incorrect email and password', async ({ homePage, loginPage, signupPage }) => {
+        await test.step('Go to Login page through header', async () => {
+            await homePage.header.goToLoginPage();
+            softExpect(await loginPage.isLoginFormHeadingVisible()).toBeTruthy();
+            softExpect(await loginPage.getLoginFormHeadingText()).toBe('Login to your account');
+        });
+
+        await test.step('Enter incorrect email address and password', async () => {
+            await loginPage.login(loginTestData.invalidUser.email, loginTestData.invalidUser.password);
+        });
+
+        await test.step(` Verify that 'Logged in as ${ERROR_MESSAGE.INVALID_LOGIN_FORM}' is visible`, async () => {
+            softExpect(await loginPage.getErrorMessageLogin()).toEqual(ERROR_MESSAGE.INVALID_LOGIN_FORM);
         });
     });
 });
