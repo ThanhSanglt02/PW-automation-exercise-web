@@ -10,7 +10,7 @@ const signupTestData = validSignupTestData({
 test.describe('Sign up & Login @signup', () => {
     test('Test Case 1: Register User', async ({ homePage, loginPage, signupPage }) => {
         await test.step('Go to Signup page through header', async () => {
-            await homePage.header.goToLoginPage();
+            await homePage.goToLoginPage();
             softExpect(await loginPage.isSignupFormHeadingVisible()).toBeTruthy();
             softExpect(await loginPage.getSignupFormHeadingText()).toBe('New User Signup!');
         });
@@ -31,7 +31,7 @@ test.describe('Sign up & Login @signup', () => {
 
         await test.step(` Verify that 'Logged in as ${signupTestData.credential.username}' is visible`, async () => {
             await signupPage.clickContinueButton();
-            softExpect(await loginPage.header.getUserNameLogged()).toContain(signupTestData.credential.username);
+            softExpect(await loginPage.getUserNameLogged()).toContain(signupTestData.credential.username);
         });
     });
 });
@@ -39,7 +39,7 @@ test.describe('Sign up & Login @signup', () => {
 test.describe('Login @login', () => {
     test('Test Case 2: Login User with correct email and password', async ({ homePage, loginPage, signupPage }) => {
         await test.step('Go to Login page through header', async () => {
-            await homePage.header.goToLoginPage();
+            await homePage.goToLoginPage();
             softExpect(await loginPage.isLoginFormHeadingVisible()).toBeTruthy();
             softExpect(await loginPage.getLoginFormHeadingText()).toBe('Login to your account');
         });
@@ -50,13 +50,13 @@ test.describe('Login @login', () => {
 
         await test.step(` Verify that 'Logged in as ${loginTestData.validUser.username}' is visible`, async () => {
             await signupPage.clickContinueButton();
-            softExpect(await loginPage.header.getUserNameLogged()).toContain(loginTestData.validUser.username);
+            softExpect(await loginPage.getUserNameLogged()).toContain(loginTestData.validUser.username);
         });
     });
 
     test('Test Case 3: Login User with incorrect email and password', async ({ homePage, loginPage, signupPage }) => {
         await test.step('Go to Login page through header', async () => {
-            await homePage.header.goToLoginPage();
+            await homePage.goToLoginPage();
             softExpect(await loginPage.isLoginFormHeadingVisible()).toBeTruthy();
             softExpect(await loginPage.getLoginFormHeadingText()).toBe('Login to your account');
         });

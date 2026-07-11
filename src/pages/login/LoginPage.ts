@@ -101,5 +101,6 @@ export class LoginPage extends HomePage {
         await playwrightActions.fillElement(this.loginPasswordInput, password);
         await playwrightActions.clickElement(this.loginButton);
         await this.waitForLoadState();
+        await this.waitForPageRender();
     }
 }

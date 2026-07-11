@@ -17,6 +17,10 @@ export default defineConfig({
     testDir: './tests',
     /* Run tests in files in parallel */
     fullyParallel: true,
+    timeout: 120_000,
+    expect: {
+        timeout: 5_000,
+    },
     /* Fail the build on CI if you accidentally left test.only in the source code. */
     forbidOnly: !!process.env.CI,
     retries: process.env.RETRY_COUNT ? Number(process.env.RETRY_COUNT) : 0,
@@ -27,7 +31,6 @@ export default defineConfig({
     use: {
         /* Base URL to use in actions like `await page.goto('')`. */
         baseURL: process.env.URL!,
-
         actionTimeout: 0,
         trace: {
             mode: traceLevel,

@@ -34,6 +34,7 @@ export class HomePage extends BasePage {
     private async clickMenuLink(path: string): Promise<void> {
         const menuLink = this.menuLink(path);
         await playwrightActions.clickElement(menuLink);
+        await this.waitForPageRender();
     }
 
     /**
