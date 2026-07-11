@@ -5,15 +5,13 @@ import { playwrightActions } from '../../utils/functional/elementAction';
 import { HomePage } from '../HomePage';
 
 export default class ProductPage extends HomePage {
-    private readonly selectors = {
-        viewProductLinks: "//div[@class='single-products']/following-sibling::div//a[text() = 'View Product']",
-    } as const;
-
+    readonly viewProductLinksSelector =
+        "//div[@class='single-products']/following-sibling::div//a[text() = 'View Product']";
     readonly viewProductLinks: Locator;
 
     constructor(page: Page) {
         super(page);
-        this.viewProductLinks = this.page.locator(this.selectors.viewProductLinks);
+        this.viewProductLinks = this.page.locator(this.viewProductLinksSelector);
     }
 
     /**

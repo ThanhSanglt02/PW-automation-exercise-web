@@ -1,19 +1,17 @@
 import { Locator, Page } from '@playwright/test';
 import { playwrightActions } from '../../utils/functional/elementAction';
-import { BasePage } from '../BasePage';
+import { HomePage } from '../HomePage';
 
-export class LoginPage extends BasePage {
-    private readonly selectors = {
-        signupFormHeading: '.signup-form h2',
-        signupNameInput: '.signup-form [data-qa="signup-name"]',
-        signupEmailInput: '.signup-form [data-qa="signup-email"]',
-        signupButton: '.signup-form [data-qa="signup-button"]',
-        loginFormHeading: '.login-form h2',
-        loginEmailInput: '.login-form [data-qa="login-email"]',
-        loginPasswordInput: '.login-form [data-qa="login-password"]',
-        loginButton: '.login-form [data-qa="login-button"]',
-        loginErrorMessage: '.login-form p',
-    };
+export class LoginPage extends HomePage {
+    readonly signupFormHeadingSelector = '.signup-form h2';
+    readonly signupNameInputSelector = '.signup-form [data-qa="signup-name"]';
+    readonly signupEmailInputSelector = '.signup-form [data-qa="signup-email"]';
+    readonly signupButtonSelector = '.signup-form [data-qa="signup-button"]';
+    readonly loginFormHeadingSelector = '.login-form h2';
+    readonly loginEmailInputSelector = '.login-form [data-qa="login-email"]';
+    readonly loginPasswordInputSelector = '.login-form [data-qa="login-password"]';
+    readonly loginButtonSelector = '.login-form [data-qa="login-button"]';
+    readonly loginErrorMessageSelector = '.login-form p';
 
     readonly signupFormHeading: Locator;
     readonly signupNameInput: Locator;
@@ -27,15 +25,15 @@ export class LoginPage extends BasePage {
 
     constructor(page: Page) {
         super(page);
-        this.signupFormHeading = this.page.locator(this.selectors.signupFormHeading);
-        this.signupNameInput = this.page.locator(this.selectors.signupNameInput);
-        this.signupEmailInput = this.page.locator(this.selectors.signupEmailInput);
-        this.signupButton = this.page.locator(this.selectors.signupButton);
-        this.loginFormHeading = this.page.locator(this.selectors.loginFormHeading);
-        this.loginEmailInput = this.page.locator(this.selectors.loginEmailInput);
-        this.loginPasswordInput = this.page.locator(this.selectors.loginPasswordInput);
-        this.loginButton = this.page.locator(this.selectors.loginButton);
-        this.loginErrorMessage = this.page.locator(this.selectors.loginErrorMessage);
+        this.signupFormHeading = this.page.locator(this.signupFormHeadingSelector);
+        this.signupNameInput = this.page.locator(this.signupNameInputSelector);
+        this.signupEmailInput = this.page.locator(this.signupEmailInputSelector);
+        this.signupButton = this.page.locator(this.signupButtonSelector);
+        this.loginFormHeading = this.page.locator(this.loginFormHeadingSelector);
+        this.loginEmailInput = this.page.locator(this.loginEmailInputSelector);
+        this.loginPasswordInput = this.page.locator(this.loginPasswordInputSelector);
+        this.loginButton = this.page.locator(this.loginButtonSelector);
+        this.loginErrorMessage = this.page.locator(this.loginErrorMessageSelector);
     }
 
     /**

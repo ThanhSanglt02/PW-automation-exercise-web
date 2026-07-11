@@ -1,15 +1,12 @@
 import { Page, test } from '@playwright/test';
 import { ADS_URL, WAIT_TIMES } from '../../data/constant';
 import { logger } from '../utils/functional/logger';
-import { Header } from './components/Header';
 
 export class BasePage {
     protected page: Page;
-    readonly header: Header;
 
     constructor(page: Page) {
         this.page = page;
-        this.header = new Header(this.page);
     }
 
     /**

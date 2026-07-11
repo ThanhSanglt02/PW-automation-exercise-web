@@ -5,28 +5,26 @@ import { playwrightActions } from '../../utils/functional/elementAction';
 import { BasePage } from '../BasePage';
 
 export class SignupPage extends BasePage {
-    private readonly selectors = {
-        titleRadio: `input[type="radio"][name="title"][value="{0}"]`,
-        passwordInput: '[data-qa="password"]',
-        daySelect: '[data-qa="days"]',
-        monthSelect: '[data-qa="months"]',
-        yearSelect: '[data-qa="years"]',
-        newsletterCheckbox: '#newsletter',
-        specialOffersCheckbox: '#optin',
-        firstNameInput: '[data-qa="first_name"]',
-        lastNameInput: '[data-qa="last_name"]',
-        companyInput: '[data-qa="company"]',
-        addressInput: '[data-qa="address"]',
-        address2Input: '[data-qa="address2"]',
-        countrySelect: '[data-qa="country"]',
-        stateInput: '[data-qa="state"]',
-        cityInput: '[data-qa="city"]',
-        zipcodeInput: '[data-qa="zipcode"]',
-        mobileNumberInput: '[data-qa="mobile_number"]',
-        createAccountButton: '[data-qa="create-account"]',
-        accountCreatedHeading: '[data-qa="account-created"]',
-        continueButton: `//a[@data-qa="continue-button"]`,
-    };
+    readonly titleRadioSelector = `input[type="radio"][name="title"][value="{0}"]`;
+    readonly passwordInputSelector = '[data-qa="password"]';
+    readonly daySelectSelector = '[data-qa="days"]';
+    readonly monthSelectSelector = '[data-qa="months"]';
+    readonly yearSelectSelector = '[data-qa="years"]';
+    readonly newsletterCheckboxSelector = '#newsletter';
+    readonly specialOffersCheckboxSelector = '#optin';
+    readonly firstNameInputSelector = '[data-qa="first_name"]';
+    readonly lastNameInputSelector = '[data-qa="last_name"]';
+    readonly companyInputSelector = '[data-qa="company"]';
+    readonly addressInputSelector = '[data-qa="address"]';
+    readonly address2InputSelector = '[data-qa="address2"]';
+    readonly countrySelectSelector = '[data-qa="country"]';
+    readonly stateInputSelector = '[data-qa="state"]';
+    readonly cityInputSelector = '[data-qa="city"]';
+    readonly zipcodeInputSelector = '[data-qa="zipcode"]';
+    readonly mobileNumberInputSelector = '[data-qa="mobile_number"]';
+    readonly createAccountButtonSelector = '[data-qa="create-account"]';
+    readonly accountCreatedHeadingSelector = '[data-qa="account-created"]';
+    readonly continueButtonSelector = `//a[@data-qa="continue-button"]`;
 
     readonly passwordInput: Locator;
     readonly daySelect: Locator;
@@ -50,25 +48,25 @@ export class SignupPage extends BasePage {
 
     constructor(page: Page) {
         super(page);
-        this.passwordInput = this.page.locator(this.selectors.passwordInput);
-        this.daySelect = this.page.locator(this.selectors.daySelect);
-        this.monthSelect = this.page.locator(this.selectors.monthSelect);
-        this.yearSelect = this.page.locator(this.selectors.yearSelect);
-        this.newsletterCheckbox = this.page.locator(this.selectors.newsletterCheckbox);
-        this.specialOffersCheckbox = this.page.locator(this.selectors.specialOffersCheckbox);
-        this.firstNameInput = this.page.locator(this.selectors.firstNameInput);
-        this.lastNameInput = this.page.locator(this.selectors.lastNameInput);
-        this.companyInput = this.page.locator(this.selectors.companyInput);
-        this.addressInput = this.page.locator(this.selectors.addressInput);
-        this.address2Input = this.page.locator(this.selectors.address2Input);
-        this.countrySelect = this.page.locator(this.selectors.countrySelect);
-        this.stateInput = this.page.locator(this.selectors.stateInput);
-        this.cityInput = this.page.locator(this.selectors.cityInput);
-        this.zipcodeInput = this.page.locator(this.selectors.zipcodeInput);
-        this.mobileNumberInput = this.page.locator(this.selectors.mobileNumberInput);
-        this.createAccountButton = this.page.locator(this.selectors.createAccountButton);
-        this.accountCreatedHeading = this.page.locator(this.selectors.accountCreatedHeading);
-        this.continueButton = this.page.locator(this.selectors.continueButton);
+        this.passwordInput = this.page.locator(this.passwordInputSelector);
+        this.daySelect = this.page.locator(this.daySelectSelector);
+        this.monthSelect = this.page.locator(this.monthSelectSelector);
+        this.yearSelect = this.page.locator(this.yearSelectSelector);
+        this.newsletterCheckbox = this.page.locator(this.newsletterCheckboxSelector);
+        this.specialOffersCheckbox = this.page.locator(this.specialOffersCheckboxSelector);
+        this.firstNameInput = this.page.locator(this.firstNameInputSelector);
+        this.lastNameInput = this.page.locator(this.lastNameInputSelector);
+        this.companyInput = this.page.locator(this.companyInputSelector);
+        this.addressInput = this.page.locator(this.addressInputSelector);
+        this.address2Input = this.page.locator(this.address2InputSelector);
+        this.countrySelect = this.page.locator(this.countrySelectSelector);
+        this.stateInput = this.page.locator(this.stateInputSelector);
+        this.cityInput = this.page.locator(this.cityInputSelector);
+        this.zipcodeInput = this.page.locator(this.zipcodeInputSelector);
+        this.mobileNumberInput = this.page.locator(this.mobileNumberInputSelector);
+        this.createAccountButton = this.page.locator(this.createAccountButtonSelector);
+        this.accountCreatedHeading = this.page.locator(this.accountCreatedHeadingSelector);
+        this.continueButton = this.page.locator(this.continueButtonSelector);
     }
     /**
      * Gets the title radio button locator by title value.
@@ -77,7 +75,7 @@ export class SignupPage extends BasePage {
      * @returns Locator for the matching title radio button.
      */
     titleRadio(title: Title): Locator {
-        return this.page.locator(String.format(this.selectors.titleRadio, title));
+        return this.page.locator(String.format(this.titleRadioSelector, title));
     }
 
     /**
@@ -132,7 +130,7 @@ export class SignupPage extends BasePage {
      * @returns Promise that resolves when post-signup navigation and ad handling are completed.
      */
     async clickContinueButton(): Promise<void> {
-        let isVisible = await this.page.isVisible(this.selectors.continueButton);
+        const isVisible = await this.page.isVisible(this.continueButtonSelector);
         if (isVisible) {
             await playwrightActions.clickElement(this.continueButton);
         }
