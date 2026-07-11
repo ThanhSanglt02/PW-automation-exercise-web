@@ -26,6 +26,12 @@ export const COUNTRIES = {
     Singapore: 'Singapore',
 } as const;
 
+export const LIST_ITEM_SELECTIONS = {
+    RANDOM: 'random',
+    FIRST: 'first',
+    LAST: 'last',
+} as const;
+
 export const ERROR_MESSAGE = {
     INVALID_LOGIN_FORM: 'Your email or password is incorrect!',
 } as const;

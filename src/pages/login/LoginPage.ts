@@ -1,6 +1,6 @@
 import { Locator, Page } from '@playwright/test';
-import { playwrightActions } from '../utils/functional/elementAction';
-import { BasePage } from './BasePage';
+import { playwrightActions } from '../../utils/functional/elementAction';
+import { BasePage } from '../BasePage';
 
 export class LoginPage extends BasePage {
     private readonly selectors = {
@@ -98,7 +98,7 @@ export class LoginPage extends BasePage {
      * @param password Password used for login.
      * @returns Promise that resolves when the login form is submitted.
      */
-    async login(email: string, password: string): Promise<void> {
+    async gitlogin(email: string, password: string): Promise<void> {
         await playwrightActions.fillElement(this.loginEmailInput, email);
         await playwrightActions.fillElement(this.loginPasswordInput, password);
         await playwrightActions.clickElement(this.loginButton);

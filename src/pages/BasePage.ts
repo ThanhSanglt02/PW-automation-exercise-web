@@ -22,11 +22,11 @@ export class BasePage {
             states: 'domcontentloaded, load',
             timeout,
         });
-
         await test.step('I wait for page load states', async () => {
             await this.page.waitForLoadState('domcontentloaded', { timeout: timeout });
             await this.page.waitForLoadState('load', { timeout: timeout });
         });
+        await this.closeAds();
     }
 
     /**

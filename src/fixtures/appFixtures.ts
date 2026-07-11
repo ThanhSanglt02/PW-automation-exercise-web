@@ -1,34 +1,36 @@
 import { test as base, expect } from '@playwright/test';
 import { WEB_URLS } from '../../data/constant';
-import { LandingPage } from '../pages/LandingPage';
-import { LoginPage } from '../pages/LoginPage';
-import { SignupPage } from '../pages/SignupPage';
+import { HomePage } from '../pages/HomePage';
+import { LoginPage } from '../pages/login/LoginPage';
+import { SignupPage } from '../pages/login/SignupPage';
+import ProductPage from '../pages/product/ProductPage';
 
 type AppFixtures = {
-    landingPage: LandingPage;
+    homePage: HomePage;
     loginPage: LoginPage;
+    productPage: ProductPage;
     signupPage: SignupPage;
-    homePage: LandingPage;
 };
 
 export const softExpect = expect.configure({ soft: true });
 
 export const test = base.extend<AppFixtures>({
-    landingPage: async ({ page }, use) => {
-        await use(new LandingPage(page));
+    homePage: async ({ page }, use) => {
+        const homePage = new HomePage(page);
+        await page.goto(WEB_URLS.HOME_PAGE);
+        await homePage.waitForLoadState();
+        await use(homePage);
     },
 
     loginPage: async ({ page }, use) => {
         await use(new LoginPage(page));
     },
 
-    signupPage: async ({ page }, use) => {
-        await use(new SignupPage(page));
+    productPage: async ({ page }, use) => {
+        await use(new ProductPage(page));
     },
 
-    homePage: async ({ page, landingPage }, use) => {
-        await page.goto(WEB_URLS.HOME_PAGE);
-        await landingPage.waitForLoadState();
-        await use(landingPage);
+    signupPage: async ({ page }, use) => {
+        await use(new SignupPage(page));
     },
 });

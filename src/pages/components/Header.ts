@@ -33,10 +33,7 @@ export class Header {
      */
     private async clickMenuLink(path: string): Promise<void> {
         const menuLink = this.menuLink(path);
-        await playwrightActions.clickElement(menuLink, {
-            page: this.page,
-            retryWhenAdsClosed: true,
-        });
+        await playwrightActions.clickElement(menuLink);
     }
 
     /**

@@ -1,8 +1,8 @@
 import { Locator, Page } from '@playwright/test';
 import { String } from 'typescript-string-operations';
-import { Title, SignupAccountInformation } from '../types/types';
-import { playwrightActions } from '../utils/functional/elementAction';
-import { BasePage } from './BasePage';
+import { Title, SignupAccountInformation } from '../../types/types';
+import { playwrightActions } from '../../utils/functional/elementAction';
+import { BasePage } from '../BasePage';
 
 export class SignupPage extends BasePage {
     private readonly selectors = {

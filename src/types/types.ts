@@ -1,10 +1,11 @@
-import { COUNTRIES, TITLES, WEB_URLS } from '../../data/constant';
+import { COUNTRIES, LIST_ITEM_SELECTIONS, TITLES, WEB_URLS } from '../../data/constant';
 
 export type Title = (typeof TITLES)[keyof typeof TITLES];
 
 export type WebUrl = (typeof WEB_URLS)[keyof typeof WEB_URLS];
 
 export type Country = (typeof COUNTRIES)[keyof typeof COUNTRIES];
+export type ListItemSelection = (typeof LIST_ITEM_SELECTIONS)[keyof typeof LIST_ITEM_SELECTIONS];
 
 export type DateOfBirth = {
     day: string;
