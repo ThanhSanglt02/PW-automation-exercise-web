@@ -98,7 +98,7 @@ export class LoginPage extends BasePage {
      * @param password Password used for login.
      * @returns Promise that resolves when the login form is submitted.
      */
-    async gitlogin(email: string, password: string): Promise<void> {
+    async login(email: string, password: string): Promise<void> {
         await playwrightActions.fillElement(this.loginEmailInput, email);
         await playwrightActions.fillElement(this.loginPasswordInput, password);
         await playwrightActions.clickElement(this.loginButton);
