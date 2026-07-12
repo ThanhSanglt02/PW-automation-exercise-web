@@ -6,6 +6,11 @@ on:
     pull_request:
         branches: [main]
 
+permissions:
+    contents: write
+    pages: write
+    id-token: write
+
 jobs:
     test:
         timeout-minutes: 180
@@ -37,6 +42,7 @@ jobs:
               run: pnpm exec playwright install --with-deps chromium
 
             - name: Run Playwright tests
+              id: playwright
               run: pnpm exec playwright test
 
             - uses: actions/upload-artifact@v4
@@ -44,4 +50,103 @@ jobs:
               with:
                   name: playwright-report
                   path: playwright-report/
-                  retention-days: 30
+                  retention-days: 7
+
+            - name: Prepare Playwright report site
+              if: ${{ always() && !cancelled() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
+              id: report-site
+              run: |
+                  report_date="$(date -u +'%Y-%m-%d-%H%M%S')"
+                  report_dir="reports/${report_date}-${GITHUB_RUN_ID}-attempt-${GITHUB_RUN_ATTEMPT}"
+
+                  mkdir -p pages-site
+
+                  if git ls-remote --exit-code --heads origin gh-pages >/dev/null 2>&1; then
+                    git fetch origin gh-pages --depth=1
+                    git --work-tree=pages-site checkout origin/gh-pages -- .
+                  fi
+
+                  mkdir -p "pages-site/${report_dir}"
+
+                  if [ -d playwright-report ]; then
+                    cp -R playwright-report/. "pages-site/${report_dir}/"
+                  else
+                    cat > "pages-site/${report_dir}/index.html" <<EOF
+                  <!doctype html>
+                  <html lang="en">
+                    <head>
+                      <meta charset="utf-8">
+                      <title>Playwright Report</title>
+                    </head>
+                    <body>
+                      <h1>Playwright report was not generated</h1>
+                      <p>Workflow run: ${GITHUB_RUN_ID}</p>
+                    </body>
+                  </html>
+                  EOF
+                  fi
+
+                  cutoff_date="$(date -u -d '7 days ago' +'%Y-%m-%d-%H%M%S')"
+                  find pages-site/reports -mindepth 1 -maxdepth 1 -type d | while read -r dir; do
+                    name="$(basename "$dir")"
+                    report_timestamp="${name:0:17}"
+                    if [[ "$report_timestamp" < "$cutoff_date" ]]; then
+                      rm -rf "$dir"
+                    fi
+                  done
+
+                  {
+                    echo '<!doctype html>'
+                    echo '<html lang="en">'
+                    echo '<head>'
+                    echo '  <meta charset="utf-8">'
+                    echo '  <title>Playwright Reports</title>'
+                    echo '  <style>'
+                    echo '    body { font-family: Arial, sans-serif; margin: 40px; color: #1f2937; }'
+                    echo '    h1 { margin-bottom: 8px; }'
+                    echo '    ul { line-height: 1.9; padding-left: 20px; }'
+                    echo '    a { color: #0969da; }'
+                    echo '  </style>'
+                    echo '</head>'
+                    echo '<body>'
+                    echo '  <h1>Playwright Reports</h1>'
+                    echo '  <p>Reports older than 7 days are removed on the next workflow run.</p>'
+                    echo '  <ul>'
+                    find pages-site/reports -mindepth 1 -maxdepth 1 -type d | sort -r | while read -r dir; do
+                      name="$(basename "$dir")"
+                      echo "    <li><a href=\"reports/${name}/\">${name}</a></li>"
+                    done
+                    echo '  </ul>'
+                    echo '</body>'
+                    echo '</html>'
+                  } > pages-site/index.html
+
+                  touch pages-site/.nojekyll
+                  echo "report_dir=${report_dir}" >> "$GITHUB_OUTPUT"
+
+            - name: Commit Playwright report site
+              if: ${{ always() && !cancelled() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
+              run: |
+                  cd pages-site
+                  git init
+                  git checkout -B gh-pages
+                  git config user.name "github-actions[bot]"
+                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                  git add .
+                  git commit -m "Publish Playwright report ${GITHUB_RUN_ID}" || exit 0
+                  git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+                  git push --force origin gh-pages
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Upload GitHub Pages artifact
+              if: ${{ always() && !cancelled() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
+              uses: actions/upload-pages-artifact@v5
+              with:
+                  path: pages-site
+                  include-hidden-files: true
+
+            - name: Deploy Playwright report to GitHub Pages
+              if: ${{ always() && !cancelled() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
+              id: deployment
+              uses: actions/deploy-pages@v4

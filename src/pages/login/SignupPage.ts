@@ -135,7 +135,7 @@ export class SignupPage extends BasePage {
             await playwrightActions.clickElement(this.continueButton);
         }
         await this.waitForLoadState();
-        await this.closeAds();
+        await this.waitForPageRender();
     }
 
     /**
