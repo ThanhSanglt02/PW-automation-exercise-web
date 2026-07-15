@@ -1,6 +1,6 @@
 import { Locator, Page } from '@playwright/test';
 import { String } from 'typescript-string-operations';
-import { Title, SignupAccountInformation } from '../../types/types';
+import { Title, SignupAccountInformation } from '../../types/businessType';
 import { playwrightActions } from '../../utils/functional/elementAction';
 import { BasePage } from '../BasePage';
 

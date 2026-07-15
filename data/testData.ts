@@ -1,4 +1,4 @@
-import { SignupAccountInformation, SignupTestData } from '../src/types/types';
+import { SignupAccountInformation, SignupTestData } from '../src/types/businessType';
 import { fakerSignupAccountInformation, fakerSignupCredential } from '../src/utils/functional/faker';
 
 /**

@@ -1,6 +1,6 @@
-import { softExpect, test } from '../src/fixtures/appFixtures';
-import { ADS_URL, LIST_ITEM_SELECTIONS } from '../data/constant';
-import { loginTestData } from '../data/testData';
+import { softExpect, test } from '../../src/fixtures/appFixtures';
+import { ADS_URL, LIST_ITEM_SELECTIONS } from '../../data/constant';
+import { loginTestData } from '../../data/testData';
 
 test.describe('View Product Detail', () => {
     test.beforeEach(async ({ homePage, loginPage }) => {

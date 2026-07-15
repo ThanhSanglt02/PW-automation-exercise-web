@@ -1,6 +1,6 @@
-import { softExpect, test } from '../src/fixtures/appFixtures';
-import { validSignupTestData, loginTestData } from '../data/testData';
-import { ERROR_MESSAGE } from '../data/constant';
+import { softExpect, test } from '../../src/fixtures/appFixtures';
+import { validSignupTestData, loginTestData } from '../../data/testData';
+import { ERROR_MESSAGE } from '../../data/constant';
 
 const signupTestData = validSignupTestData({
     subscribeNewsletter: true,

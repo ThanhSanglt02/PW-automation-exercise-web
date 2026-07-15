@@ -1,6 +1,6 @@
 import { Locator, Page } from '@playwright/test';
 import { LIST_ITEM_SELECTIONS } from '../../../data/constant';
-import { ListItemSelection } from '../../types/types';
+import { ListItemSelection } from '../../types/businessType';
 import { playwrightActions } from '../../utils/functional/elementAction';
 import { HomePage } from '../HomePage';
 

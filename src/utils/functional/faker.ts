@@ -1,6 +1,6 @@
 import { faker, SexType } from '@faker-js/faker';
 import { COUNTRIES, TITLES } from '../../../data/constant';
-import { Country, DateOfBirth, SignupAccountInformation, SignupCredential, Title } from '../../types/types';
+import { Country, DateOfBirth, SignupAccountInformation, SignupCredential, Title } from '../../types/businessType';
 
 /**
  * Generates the login/signup credential used on the first signup form.
