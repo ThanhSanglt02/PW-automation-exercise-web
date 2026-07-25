@@ -122,6 +122,7 @@ export class SignupPage extends BasePage {
     async submitSignUpForm(): Promise<void> {
         await playwrightActions.clickElement(this.createAccountButton);
         await this.waitForLoadState();
+        await this.waitForPageRender();
     }
 
     /**

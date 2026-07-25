@@ -5,30 +5,31 @@ import { ApiRequestOptions } from '../../types/apiType';
 /**
  * Send a GET API request.
  * @param request Playwright API request context.
- * @param url API URL.
+ * @param endpoint API URL.
  * @param options Optional request configuration.
  * @returns Promise that resolves to the API response.
  */
 export async function getRequest(
     request: APIRequestContext,
-    url: string,
+    endpoint: string,
+    description: string = '',
     options?: ApiRequestOptions,
 ): Promise<APIResponse> {
-    logger('Sending GET API request', { url, options });
+    logger('Sending GET API request', { url: endpoint, options, description });
 
     try {
-        const response = await request.get(url, options);
+        const response = await request.get(endpoint, options);
 
         logger('Received GET API response', {
-            url,
+            url: endpoint,
             status: response.status(),
             ok: response.ok(),
+            description,
         });
-
         return response;
     } catch (error) {
         logger('GET API request failed', {
-            url,
+            url: endpoint,
             error: error instanceof Error ? error.message : String(error),
         });
 

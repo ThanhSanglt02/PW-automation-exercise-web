@@ -35,7 +35,6 @@ export class BasePage {
      * @param timeout Maximum time to wait.
      */
     public async waitForPageRender(timeout: number = WAIT_TIMES.SHORT): Promise<void> {
-        await this.waitForLoadState(timeout);
         await this.waitForOptionalElementToDisappear(this.pageLoadingIndicatorSelector, timeout);
         await this.waitForOptionalElementToDisappear(this.pageLoadingTitleSelector, timeout);
         await this.waitForOptionalElementToDisappear(this.pageLoadingOverlaySelector, timeout);

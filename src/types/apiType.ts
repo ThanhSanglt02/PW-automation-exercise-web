@@ -29,10 +29,3 @@ export type Product = {
     category: ProductCategory;
 };
 
-/**
- * Products list API response body.
- */
-export type ProductsListResponse = {
-    responseCode: number;
-    products: Product[];
-};

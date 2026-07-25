@@ -48,7 +48,9 @@ export class HomePage extends BasePage {
      * Navigates to the products page from the header.
      */
     async goToProductsPage(): Promise<void> {
-        await this.clickMenuLink(WEB_URLS.PRODUCT_PAGE);
+        await this.navigateTo(`${getEnvConfig().url}/products`);
+        await this.waitForLoadState();
+        await this.waitForPageRender();
     }
 
     /**

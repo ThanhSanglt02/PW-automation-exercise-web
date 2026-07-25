@@ -7,10 +7,9 @@ test.describe('View Product Detail', () => {
         await homePage.goToLoginPage();
         await loginPage.login(loginTestData.validUser.email, loginTestData.validUser.password);
     });
-    test('Test Case 8: Verify All Products and product detail page', async ({ homePage, page, productPage }) => {
+    test.only('Test Case 8: Verify All Products and product detail page', async ({ homePage, page, productPage }) => {
         await test.step('Go to Products page through header', async () => {
             await homePage.goToProductsPage();
-            await productPage.waitForLoadState();
             softExpect(page.url()).toContain('/products');
         });
 

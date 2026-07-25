@@ -44,5 +44,6 @@ export default class ProductPage extends HomePage {
         const productViewLink = await this.getProductViewLink(productSelection);
         await playwrightActions.clickElement(productViewLink);
         await this.waitForLoadState();
+        await this.waitForPageRender();
     }
 }
